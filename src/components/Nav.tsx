@@ -1,4 +1,8 @@
-export const Nav = () => {
+interface NavProps{
+  waldoDisplay:string,
+  
+}
+export const Nav = ({waldoDisplay}:NavProps) => {
   return (
     <nav className="sticky top-0 flex items-center justify-between h-20 pl-3 pr-3 bg-white">
       <div className="flex items-center gap-3">
@@ -13,9 +17,10 @@ export const Nav = () => {
         </nav>
       </div>
       <div className="flex gap-6">
-        <img className="w-14 h-14" src="/src/assets/waldo.png" alt="" />
-        <img className="w-14 h-14" src="/src/assets/odlaw.png" alt="" />
-        <img className="w-14 h-14" src="/src/assets/wizard.png" alt="" />
+
+        <span style={{backgroundColor:waldoDisplay}}><img className="w-14 h-14" src="/src/assets/waldo.png" alt="" /></span>
+        <span> <img className="w-14 h-14" src="/src/assets/odlaw.png" alt="" /></span>
+       <span> <img className="w-14 h-14" src="/src/assets/wizard.png" alt="" /></span>
       </div>
       <button className="font-bold bg-red-400 rounded-md h-14 w-36 hover:bg-red-500">
         Leaderboard

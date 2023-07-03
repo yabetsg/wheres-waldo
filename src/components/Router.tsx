@@ -4,7 +4,8 @@ export const  Router = ()=>{
     return(
         <BrowserRouter>
             <Routes>
-                <Route></Route>
+                <Route path="/leaderboard"></Route>
+                <Route path="/"></Route>
             </Routes>
         </BrowserRouter>
     );

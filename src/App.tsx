@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { initializeApp } from "firebase/app";
-
+import { Context } from './components/Game';
 import './App.css'
 import { Nav } from './components/Nav';
 import { Game } from './components/Game';
@@ -24,10 +24,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
   const [count, setCount] = useState(0)
-
+  const test = useContext(Context)
+  console.log('context: '+ test);
+  
   return (
     <>
-     <Nav/>
+     <Nav waldoDisplay={''}/>
      <Game/>
     </>
   )
