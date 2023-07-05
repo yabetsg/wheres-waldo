@@ -1,19 +1,29 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import { getDatabase, ref, child, get,set } from "firebase/database";
+import { Nav } from "./Nav";
 export const Game =()=>{
+    interface Position{
+        posX: Array<number>,
+        posY: Array<number>
+    }
+
+    
     const [displayModal,setDisplayModal] = useState<boolean>(false);
     const [modalPosX,setModalPosX] = useState<number>(0);
     const [modalPosY,setModalPosY] = useState<number>(0);
     const [characterPosX,setCharacterPosX] = useState<number>(0);
     const [characterPosY,setCharacterPosY] = useState<number>(0);
-    const [displayFoundCharacter,setDisplayFoundCharacter] = useState<boolean>(false);
-    const [foundCharacter,setFoundCharacter] = useState<string>('');
+    const [displayValidationText,setDisplayFoundCharacter] = useState<boolean>(false);
+    const [foundCharacterText,setFoundCharacterText] = useState<string>('');
+    const [displayWaldoOnNav, setDisplayWaldoOnNav] = useState<boolean>(true);
+    const [displayOdlawOnNav, setDisplayOdlawOnNav] = useState<boolean>(true);
+    const [displayWizardoOnNav, setDisplayWizardOnNav] = useState<boolean>(true);
+    const [minute,setMinute] = useState<string>('00');
+    const [second, setSecond] = useState<string>('50');
+    
     //  const Context = createContext('');
-    interface Position{
-        posX: Array<number>,
-        posY: Array<number>
-    }
+    
     
 
     const handleClick = (event:any)=>{
@@ -42,18 +52,29 @@ export const Game =()=>{
          
             console.log([characterPosX,characterPosY]);
            if(positions.posX.includes(characterPosX) && positions.posY.includes(characterPosY)){
+            console.log(second);
             
-               setFoundCharacter(`You have found ${clickedCharacter}!`);  
+                switch(clickedCharacter){
+                    case 'Waldo': setDisplayWaldoOnNav(false);
+                    break;
+                    case 'Odlaw': setDisplayOdlawOnNav(false);
+                    break;
+                    case 'Wizard': setDisplayWizardOnNav(false);
+                }
+               if(clickedCharacter=='Waldo'){
+                setDisplayWaldoOnNav(false);
+               }
+               setFoundCharacterText(`You have found ${clickedCharacter}!`);  
             setTimeout(()=>{
-                setFoundCharacter('');
+                setFoundCharacterText('');
             },1000);
             console.log('found');
            }else{
-            setFoundCharacter(`Thats not ${clickedCharacter}, try again!`); 
-            // setTimeout(()=>{
+            setFoundCharacterText(`Thats not ${clickedCharacter}, try again!`); 
+            setTimeout(()=>{
                 
-            //     setFoundCharacter('');
-            // },1000); 
+                setFoundCharacterText('');
+            },1000); 
             console.log('not found');
            }  
         })        
@@ -84,14 +105,39 @@ export const Game =()=>{
         
         return validPos;
     }
-    return(
-        <div>
+    // const stopwatch = ()=>{
+    //     setInterval(()=>{
+    //         setSecond((parseInt(second)+1).toPrecision(2))
+    //     },1000)
+    // }
+    useEffect(()=>{
+        
+    //     const stopwatch = setInterval(()=>{
             
-            {<div  style={{ left: modalPosX, top: modalPosY }} className="absolute items-center justify-center text-xl font-extrabold text-center text-blue-500 bg-gray-100 rounded-md top-6">{foundCharacter}</div>}
+    //         setSecond(prev=>(parseInt(prev)+1).toString().padStart(2,'0'));
+    //         console.log(second);
+            
+    //     },1000)
+    //    return ()=>clearInterval(stopwatch);
+    },[])
+    const incrementMinute = (()=>{
+        if(second>='60'){
+        setMinute(prev=>((parseInt(prev)+1).toString().padStart(2,'0')))
+        setSecond('00');
+    }
+    })();
+    
+    return(
+        <>
+       
+        <Nav waldoDisplay={displayWaldoOnNav} odlawDisplay={displayOdlawOnNav} wizardDisplay={displayWizardoOnNav} minute={minute} second={second}/>
+        <div>
+            {<div  style={{ left: modalPosX, top: modalPosY }} className="absolute items-center justify-center text-xl font-extrabold text-center text-blue-500 bg-gray-100 rounded-md top-6">{foundCharacterText}</div>}
             <img  className="hover:animate-[shake]" onClick={handleClick} src="./src/assets/game-img.jpg"></img>
             {displayModal&&<Modal handleModalClick={handleModalClick} posX={modalPosX} posY={modalPosY}/>}
             
         </div> 
+         </>
        
     )
 }

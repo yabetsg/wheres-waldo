@@ -27,7 +27,7 @@ const app = initializeApp(firebaseConfig);
 
   return (
     <>
-     <Nav waldoDisplay={''}/>
+     
      <Game/>
     </>
   )
