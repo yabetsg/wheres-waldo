@@ -2,13 +2,13 @@ import { useContext, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { initializeApp } from "firebase/app";
-import { Context } from './components/Game';
+
 import './App.css'
 import { Nav } from './components/Nav';
 import { Game } from './components/Game';
 
 function App() {
-// TODO: Add SDKs for Firebase products that you want to use
+// TODO: Add SDKs for Firebase products to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 
@@ -24,9 +24,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
   const [count, setCount] = useState(0)
-  const test = useContext(Context)
-  console.log('context: '+ test);
-  
+
   return (
     <>
      <Nav waldoDisplay={''}/>

@@ -1,13 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import { getDatabase, ref, child, get,set } from "firebase/database";
-export const Context = createContext('d');
 export const Game =()=>{
-    const [display,setDisplay] = useState<boolean>(false);
+    const [displayModal,setDisplayModal] = useState<boolean>(false);
     const [modalPosX,setModalPosX] = useState<number>(0);
     const [modalPosY,setModalPosY] = useState<number>(0);
     const [characterPosX,setCharacterPosX] = useState<number>(0);
     const [characterPosY,setCharacterPosY] = useState<number>(0);
+    const [displayFoundCharacter,setDisplayFoundCharacter] = useState<boolean>(false);
+    const [foundCharacter,setFoundCharacter] = useState<string>('');
     //  const Context = createContext('');
     interface Position{
         posX: Array<number>,
@@ -16,17 +17,14 @@ export const Game =()=>{
     
 
     const handleClick = (event:any)=>{
-        setDisplay(true);
+        setDisplayModal(true);
         const clickedElement = event.target;
        const imgWidth = clickedElement.offsetWidth;
        const imgHeight = clickedElement.offsetHeight;
        const x = Math.floor(((event.clientX - clickedElement.offsetLeft) / imgWidth)*100);
-       const y = Math.floor(((event.clientY - clickedElement.offsetTop) / imgHeight)*100);
+       const y = Math.floor(((event.clientY - clickedElement.offsetTop+ window.scrollY) / imgHeight)*100);
        setModalPosX(event.pageX+10);
-       setModalPosY(event.pageY);
-    //    console.log([x,y]);
-        // console.log([x,y]);
-        
+       setModalPosY(event.pageY);     
         setCharacterPosX(x);
         setCharacterPosY(y);
     }
@@ -37,21 +35,32 @@ export const Game =()=>{
         }else{
             clickedCharacter = e.target.innerText;
         }
-        // console.log(clickedCharacter);
+
         
         const validPositions:Promise<Position> = getValidPositions(clickedCharacter);
         validPositions.then((positions)=>{
          
+            console.log([characterPosX,characterPosY]);
            if(positions.posX.includes(characterPosX) && positions.posY.includes(characterPosY)){
+            
+               setFoundCharacter(`You have found ${clickedCharacter}!`);  
+            setTimeout(()=>{
+                setFoundCharacter('');
+            },1000);
             console.log('found');
            }else{
+            setFoundCharacter(`Thats not ${clickedCharacter}, try again!`); 
+            // setTimeout(()=>{
+                
+            //     setFoundCharacter('');
+            // },1000); 
             console.log('not found');
            }  
         })        
-        setDisplay(false);
+        setDisplayModal(false);
     }
-
-  const db = getDatabase();
+   
+//   const db = getDatabase();
     // set(ref(db,'Waldo/positions'),{
     //     posX:[26,27,28,29],
     //     posY:[31,32,33,34,35]
@@ -75,19 +84,14 @@ export const Game =()=>{
         
         return validPos;
     }
-    // useEffect(()=>{
-    //     getValidPoints();
-    // },[])
     return(
-        <Context.Provider value={'display'}>
-       
-        <div >
+        <div>
             
-            <img onClick={handleClick} src="./src/assets/game-img.jpg"></img>
-            {display&&<Modal handleModalClick={handleModalClick} posX={modalPosX} posY={modalPosY}/>}
-          
+            {<div  style={{ left: modalPosX, top: modalPosY }} className="absolute items-center justify-center text-xl font-extrabold text-center text-blue-500 bg-gray-100 rounded-md top-6">{foundCharacter}</div>}
+            <img  className="hover:animate-[shake]" onClick={handleClick} src="./src/assets/game-img.jpg"></img>
+            {displayModal&&<Modal handleModalClick={handleModalClick} posX={modalPosX} posY={modalPosY}/>}
             
         </div> 
-        </Context.Provider>
+       
     )
 }
