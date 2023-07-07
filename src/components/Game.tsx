@@ -1,13 +1,19 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Modal } from "./Modal";
 import { getDatabase, ref, child, get,set } from "firebase/database";
 import { Nav } from "./Nav";
+import { Introdcution } from "./Introduction";
+import { GameEndModal } from "./GameEndModal";
+interface ContextProps{
+    setIntroductionOpen?:(open:boolean)=>void;
+}
+export const IntroductionContext = createContext<ContextProps>({});
 export const Game =()=>{
     interface Position{
         posX: Array<number>,
         posY: Array<number>
     }
-
+    const inputRef = useRef<HTMLInputElement>(null);
     
     const [displayModal,setDisplayModal] = useState<boolean>(false);
     const [modalPosX,setModalPosX] = useState<number>(0);
@@ -20,9 +26,10 @@ export const Game =()=>{
     const [displayOdlawOnNav, setDisplayOdlawOnNav] = useState<boolean>(true);
     const [displayWizardoOnNav, setDisplayWizardOnNav] = useState<boolean>(true);
     const [minute,setMinute] = useState<string>('00');
-    const [second, setSecond] = useState<string>('50');
+    const [second, setSecond] = useState<string>('00');
+    const [introduction, setIntroduction] = useState<boolean>(true);
     
-    //  const Context = createContext('');
+     
     
     
 
@@ -80,7 +87,14 @@ export const Game =()=>{
         })        
         setDisplayModal(false);
     }
-   
+   const handleModalSubmit = (e:any)=>{
+
+        // console.log(e);
+        console.log(inputRef);
+        
+        e.preventDefault();
+        
+   }
 //   const db = getDatabase();
     // set(ref(db,'Waldo/positions'),{
     //     posX:[26,27,28,29],
@@ -105,21 +119,20 @@ export const Game =()=>{
         
         return validPos;
     }
-    // const stopwatch = ()=>{
-    //     setInterval(()=>{
-    //         setSecond((parseInt(second)+1).toPrecision(2))
-    //     },1000)
-    // }
+   
     useEffect(()=>{
+        let stopwatch: NodeJS.Timer;
+        if(!introduction){
+            stopwatch = setInterval(()=>{
+            
+            setSecond(prev=>(parseInt(prev)+1).toString().padStart(2,'0'));
+            
+            
+        },1000)
+        }
         
-    //     const stopwatch = setInterval(()=>{
-            
-    //         setSecond(prev=>(parseInt(prev)+1).toString().padStart(2,'0'));
-    //         console.log(second);
-            
-    //     },1000)
-    //    return ()=>clearInterval(stopwatch);
-    },[])
+       return ()=>clearInterval(stopwatch);
+    },[introduction])
     const incrementMinute = (()=>{
         if(second>='60'){
         setMinute(prev=>((parseInt(prev)+1).toString().padStart(2,'0')))
@@ -128,16 +141,17 @@ export const Game =()=>{
     })();
     
     return(
-        <>
-       
+        <IntroductionContext.Provider value={{setIntroductionOpen:(open:boolean)=>setIntroduction(open)}}>
+        
         <Nav waldoDisplay={displayWaldoOnNav} odlawDisplay={displayOdlawOnNav} wizardDisplay={displayWizardoOnNav} minute={minute} second={second}/>
+        {/* {introduction&&<Introdcution/>} */}
         <div>
             {<div  style={{ left: modalPosX, top: modalPosY }} className="absolute items-center justify-center text-xl font-extrabold text-center text-blue-500 bg-gray-100 rounded-md top-6">{foundCharacterText}</div>}
-            <img  className="hover:animate-[shake]" onClick={handleClick} src="./src/assets/game-img.jpg"></img>
             {displayModal&&<Modal handleModalClick={handleModalClick} posX={modalPosX} posY={modalPosY}/>}
-            
+            {/* {introduction?<img className="blur"  onClick={handleClick} src="./src/assets/game-img.jpg"></img>:<img   onClick={handleClick} src="./src/assets/game-img.jpg"></img>}  */}
+            {<GameEndModal handleSubmit={handleModalSubmit} inputRef={inputRef}/>}
         </div> 
-         </>
+         </IntroductionContext.Provider>
        
     )
 }

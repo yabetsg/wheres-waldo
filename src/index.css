@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+@font-face {
+  font-family: 'digital-clock-font';
+  src: url('src/assets/digital-7/digital-7.ttf');
+}
 
 @tailwind base;
 @tailwind components;
