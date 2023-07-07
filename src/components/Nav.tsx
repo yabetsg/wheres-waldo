@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface NavProps{
   waldoDisplay:boolean,
   odlawDisplay:boolean,
@@ -27,10 +29,10 @@ export const Nav = ({waldoDisplay,odlawDisplay,wizardDisplay,minute,second}:NavP
        <span style={{opacity:wizardDisplay?'':0.2}}> <img className="w-14 h-14" src="/src/assets/wizard.png" alt="" /></span>
       </div>
       <div className="text-black w-28 font-['digital-clock-font'] text-4xl">{minute}:{second}</div>
-      
-      <button className="font-bold bg-red-400 rounded-md h-14 w-36 hover:bg-red-500">
+      <Link to={"/leaderboard"}><button className="font-bold bg-red-400 rounded-md h-14 w-36 hover:bg-red-500">
         Leaderboard
-      </button>
+      </button></Link>
+      
     </nav>
   );
 };

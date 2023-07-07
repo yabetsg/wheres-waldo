@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import uniqid from 'uniqid';
 import { Modal } from "./Modal";
 import { getDatabase, ref, child, get,set } from "firebase/database";
 import { Nav } from "./Nav";
@@ -14,6 +15,7 @@ export const Game =()=>{
         posY: Array<number>
     }
     const inputRef = useRef<HTMLInputElement>(null);
+    const timeRef = useRef<HTMLDivElement>(null);
     
     const [displayModal,setDisplayModal] = useState<boolean>(false);
     const [modalPosX,setModalPosX] = useState<number>(0);
@@ -28,9 +30,13 @@ export const Game =()=>{
     const [minute,setMinute] = useState<string>('00');
     const [second, setSecond] = useState<string>('00');
     const [introduction, setIntroduction] = useState<boolean>(true);
+    const [displayGameEndModal, setDisplayGameEndModal] = useState<boolean>(false);
     
      
-    
+    const prevWaldo = useRef(true);
+    const prevOdlaw = useRef(true);
+    const prevWizard = useRef(true);
+
     
 
     const handleClick = (event:any)=>{
@@ -59,7 +65,6 @@ export const Game =()=>{
          
             console.log([characterPosX,characterPosY]);
            if(positions.posX.includes(characterPosX) && positions.posY.includes(characterPosY)){
-            console.log(second);
             
                 switch(clickedCharacter){
                     case 'Waldo': setDisplayWaldoOnNav(false);
@@ -68,9 +73,9 @@ export const Game =()=>{
                     break;
                     case 'Wizard': setDisplayWizardOnNav(false);
                 }
-               if(clickedCharacter=='Waldo'){
-                setDisplayWaldoOnNav(false);
-               }
+            //    if(clickedCharacter=='Waldo'){
+            //     setDisplayWaldoOnNav(false);
+            //    }
                setFoundCharacterText(`You have found ${clickedCharacter}!`);  
             setTimeout(()=>{
                 setFoundCharacterText('');
@@ -78,21 +83,37 @@ export const Game =()=>{
             console.log('found');
            }else{
             setFoundCharacterText(`Thats not ${clickedCharacter}, try again!`); 
+           
+            
             setTimeout(()=>{
                 
                 setFoundCharacterText('');
             },1000); 
             console.log('not found');
-           }  
-        })        
+        }  
+        
+        //    if(!(displayWaldoOnNav&&displayOdlawOnNav&&displayWizardoOnNav)){
+                
+                
+        //     setDisplayGameEndModal(true);
+        // }
+        })   
+        
+          
+       
+           
         setDisplayModal(false);
     }
    const handleModalSubmit = (e:any)=>{
 
-        // console.log(e);
-        console.log(inputRef);
-        
-        e.preventDefault();
+       
+        console.log(inputRef.current?.value);
+        console.log(timeRef.current?.textContent);
+        set(ref(getDatabase(),`leaderboard/${uniqid()}`),{
+        user:inputRef.current?.value,
+        time:timeRef.current?.textContent
+    });
+        // e.preventDefault();
         
    }
 //   const db = getDatabase();
@@ -140,16 +161,22 @@ export const Game =()=>{
     }
     })();
     
+    useEffect(()=>{
+        if((!displayOdlawOnNav&&!displayWaldoOnNav&&!displayWizardoOnNav)){
+            setDisplayGameEndModal(true);
+        }
+        
+    },[displayWaldoOnNav,displayOdlawOnNav,displayWizardoOnNav])
     return(
         <IntroductionContext.Provider value={{setIntroductionOpen:(open:boolean)=>setIntroduction(open)}}>
         
         <Nav waldoDisplay={displayWaldoOnNav} odlawDisplay={displayOdlawOnNav} wizardDisplay={displayWizardoOnNav} minute={minute} second={second}/>
-        {/* {introduction&&<Introdcution/>} */}
+        {introduction&&<Introdcution/>}
         <div>
             {<div  style={{ left: modalPosX, top: modalPosY }} className="absolute items-center justify-center text-xl font-extrabold text-center text-blue-500 bg-gray-100 rounded-md top-6">{foundCharacterText}</div>}
             {displayModal&&<Modal handleModalClick={handleModalClick} posX={modalPosX} posY={modalPosY}/>}
-            {/* {introduction?<img className="blur"  onClick={handleClick} src="./src/assets/game-img.jpg"></img>:<img   onClick={handleClick} src="./src/assets/game-img.jpg"></img>}  */}
-            {<GameEndModal handleSubmit={handleModalSubmit} inputRef={inputRef}/>}
+            {introduction?<img className="blur"  onClick={handleClick} src="./src/assets/game-img.jpg"></img>:<img   onClick={handleClick} src="./src/assets/game-img.jpg"></img>} 
+            {displayGameEndModal&&<GameEndModal handleSubmit={handleModalSubmit} timeRef={timeRef} inputRef={inputRef}/>}
         </div> 
          </IntroductionContext.Provider>
        

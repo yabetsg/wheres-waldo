@@ -6,7 +6,7 @@ import { useContext } from "react";
 export const Introdcution = () => {
   const introductionContext = useContext(IntroductionContext);
   const handleClick = () => {
-    introductionContext?.setIntroductionOpen(false);
+    introductionContext.setIntroductionOpen?.(false);
   };
   return (
     <div className="flex absolute text-xl z-[999] font-semibold justify-center items-center rounded-md flex-col bg-gray-200 text-black top-2/4 left-2/4 translate-x-[-50%] translate-y-[-50%] w-[450px] h-[400px] p-7 text-center gap-6 font-serif blur-0">

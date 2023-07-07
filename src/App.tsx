@@ -6,6 +6,8 @@ import { initializeApp } from "firebase/app";
 import './App.css'
 import { Nav } from './components/Nav';
 import { Game } from './components/Game';
+import { BrowserRouter } from 'react-router-dom';
+import { Router } from './components/Router';
 
 function App() {
 // TODO: Add SDKs for Firebase products to use
@@ -26,9 +28,9 @@ const app = initializeApp(firebaseConfig);
   const [count, setCount] = useState(0)
 
   return (
-    <>
-     
-     <Game/>
+    <>  
+     {/* <Game/> */}
+     <Router/>
     </>
   )
 }
