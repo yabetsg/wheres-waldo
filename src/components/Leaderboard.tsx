@@ -1,26 +1,84 @@
-import { Nav } from "./Nav"
-
-export const Leaderboard = ()=>{
-    return(<>
-    <nav className="sticky top-0 flex items-center content-center h-20 pl-3 pr-3 bg-white">
-      <div className="flex items-center justify-center gap-3">
-        <img
-          className="w-16 h-16"
-          src="./src/assets/title-img.png"
-          alt=""
-        ></img>
-        <nav className="font-[ui-sans-serif,DodgyUltraUltra] text-3xl">
-          <span className="text-blue-500">Wheres</span>
-          <span className="text-red-500">  Waldo?</span>
-        </nav>
-      </div>
-      <div className="flex gap-6">
-
-      </div>
-
-    
-      
-    </nav>
-    <div className="w-48 bg-red-500">leaderboard</div> </>
-    )
+import { useEffect, useState } from "react";
+import { Nav } from "./Nav";
+import { getDatabase, ref, child, get,set, DataSnapshot } from "firebase/database";
+import { Link } from "react-router-dom";
+interface Leaderboard{
+  user:string;
+  time:string;
 }
+export const Leaderboard = () => {
+  const [leaderboardData, setLeaderBoardData] = useState<Array<Leaderboard>>([]);
+
+  const getLeaderBoardData = ()=>{
+    const dbRef = ref(getDatabase());
+    let res:any;
+    get(child(dbRef,'leaderboard')).then((snapshot)=>{
+        if(snapshot.exists()){
+             res = snapshot.val();
+             
+             
+                const storedData = [];
+                for(const key of Object.keys(res)){
+                    const data = res[key];
+                    storedData.push(data);
+                }
+                setLeaderBoardData(storedData);
+        
+        }else{
+            console.log('no data'); 
+        }
+    }).catch(error=>{
+        console.log(error);
+    })
+};
+useEffect(()=>{
+  getLeaderBoardData();
+  
+},[])
+// useEffect(()=>{
+//   // leaderboardData.map((data,index)=>{
+//   //   console.log(`${data.user} ${data.time}`);
+//   // })
+  
+// },[leaderboardData])
+  return (
+    <>
+      <nav className="flex">
+        <div className="flex items-center gap-5">
+          <img
+            className="w-16 h-16"
+            src="./src/assets/title-img.png"
+            alt=""
+          ></img>
+          <Link to={"/"}><nav className="font-[ui-sans-serif,DodgyUltraUltra] text-3xl">
+            <span className="text-blue-500">Wheres</span>
+            <span className="text-red-500"> Waldo?</span>
+          </nav></Link>
+          
+        </div>
+      </nav>
+      <div className="w-fit  font-[ui-sans-serif,DodgyUltraUltra] text-4xl pl-14 text-red-500  underline-offset-4 mx-auto ">
+        Leaderboard
+        <span className="block mx-auto text-blue-500 border-b-4 border-blue-500"></span>
+      </div>
+      
+      <div className="overflow-hidden p-14 sm:rounded-lg ">
+        <table className="min-w-full text-black rounded-lg shadow">
+          <thead className="bg-gray-200">
+            <tr className="h-11">
+              <th>Name</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody className="text-center border">
+           
+            {leaderboardData.map((data,index)=>{
+              return <tr className="h-11 hover:bg-slate-50" key={index}><td className="border-b">{data.user}</td><td className="border-b">{data.time}</td></tr>
+            })}
+
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+};

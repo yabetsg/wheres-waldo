@@ -1,13 +1,16 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import uniqid from 'uniqid';
 import { Modal } from "./Modal";
-import { getDatabase, ref, child, get,set } from "firebase/database";
+import { getDatabase, ref, child, get,set, DataSnapshot } from "firebase/database";
 import { Nav } from "./Nav";
 import { Introdcution } from "./Introduction";
 import { GameEndModal } from "./GameEndModal";
 interface ContextProps{
     setIntroductionOpen?:(open:boolean)=>void;
 }
+// interface LeaderBoard{
+
+// }
 export const IntroductionContext = createContext<ContextProps>({});
 export const Game =()=>{
     interface Position{
@@ -33,9 +36,6 @@ export const Game =()=>{
     const [displayGameEndModal, setDisplayGameEndModal] = useState<boolean>(false);
     
      
-    const prevWaldo = useRef(true);
-    const prevOdlaw = useRef(true);
-    const prevWizard = useRef(true);
 
     
 
@@ -143,17 +143,14 @@ export const Game =()=>{
    
     useEffect(()=>{
         let stopwatch: NodeJS.Timer;
-        if(!introduction){
+        if(!introduction&&!displayGameEndModal){
             stopwatch = setInterval(()=>{
-            
-            setSecond(prev=>(parseInt(prev)+1).toString().padStart(2,'0'));
-            
-            
+            setSecond(prev=>(parseInt(prev)+1).toString().padStart(2,'0'));     
         },1000)
         }
         
        return ()=>clearInterval(stopwatch);
-    },[introduction])
+    },[introduction,displayGameEndModal])
     const incrementMinute = (()=>{
         if(second>='60'){
         setMinute(prev=>((parseInt(prev)+1).toString().padStart(2,'0')))
@@ -166,7 +163,9 @@ export const Game =()=>{
             setDisplayGameEndModal(true);
         }
         
-    },[displayWaldoOnNav,displayOdlawOnNav,displayWizardoOnNav])
+    },[displayWaldoOnNav,displayOdlawOnNav,displayWizardoOnNav]);
+
+    
     return(
         <IntroductionContext.Provider value={{setIntroductionOpen:(open:boolean)=>setIntroduction(open)}}>
         
@@ -176,7 +175,7 @@ export const Game =()=>{
             {<div  style={{ left: modalPosX, top: modalPosY }} className="absolute items-center justify-center text-xl font-extrabold text-center text-blue-500 bg-gray-100 rounded-md top-6">{foundCharacterText}</div>}
             {displayModal&&<Modal handleModalClick={handleModalClick} posX={modalPosX} posY={modalPosY}/>}
             {introduction?<img className="blur"  onClick={handleClick} src="./src/assets/game-img.jpg"></img>:<img   onClick={handleClick} src="./src/assets/game-img.jpg"></img>} 
-            {displayGameEndModal&&<GameEndModal handleSubmit={handleModalSubmit} timeRef={timeRef} inputRef={inputRef}/>}
+            {displayGameEndModal&&<GameEndModal handleSubmit={handleModalSubmit} timeRef={timeRef} inputRef={inputRef} minute={minute} second={second}/>}
         </div> 
          </IntroductionContext.Provider>
        

@@ -1,16 +1,19 @@
 interface GameEndModalProps{
     handleSubmit:(e:any)=>void;
     inputRef:React.Ref<HTMLInputElement>;
-    timeRef:React.Ref<HTMLDivElement>
+    timeRef:React.Ref<HTMLDivElement>;
+    minute:string;
+    second:string
 }
-export const GameEndModal = ({handleSubmit,inputRef,timeRef}:GameEndModalProps)=>{
+
+export const GameEndModal = ({handleSubmit,inputRef,timeRef,minute,second}:GameEndModalProps)=>{
     
     return(
         <div className="text-red-500 flex absolute text-xl z-[999] font-semibold justify-center items-center rounded-md flex-col bg-gray-200 text-black top-2/4 left-2/4 translate-x-[-50%] translate-y-[-50%] w-[450px] h-[400px]  text-center gap-6 font-serif">
             <form action="/leaderboard" method="get" onSubmit={handleSubmit} className="flex flex-col w-64 gap-4">
                 <div>
                      <div>Your Time:</div>
-                     <div ref={timeRef}>00:00</div>
+                     <div ref={timeRef}>{minute}:{second}</div>
                 </div>
            
             
