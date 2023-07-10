@@ -1,12 +1,4 @@
-import { useContext, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import { initializeApp } from "firebase/app";
-
-
-import { Nav } from './components/Nav';
-import { Game } from './components/Game';
-import { BrowserRouter } from 'react-router-dom';
 import { Router } from './components/Router';
 
 function App() {
@@ -25,7 +17,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
+app;
   return (
     <>  
      <Router/>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import uniqid from "uniqid";
 import { Modal } from "./Modal";
 import {
@@ -7,7 +7,7 @@ import {
   child,
   get,
   set,
-  DataSnapshot,
+
 } from "firebase/database";
 import { Nav } from "./Nav";
 import { Introdcution } from "./Introduction";
@@ -132,13 +132,14 @@ export const Game = () => {
 
     return () => clearInterval(stopwatch);
   }, [introduction, displayGameEndModal]);
-  const incrementMinute = (() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const incrementMinute = () => {
     if (second >= "60") {
       setMinute((prev) => (parseInt(prev) + 1).toString().padStart(2, "0"));
       setSecond("00");
     }
-  })();
-
+  };
+  incrementMinute();
   useEffect(() => {
     if (!displayOdlawOnNav && !displayWaldoOnNav && !displayWizardoOnNav) {
       setDisplayGameEndModal(true);

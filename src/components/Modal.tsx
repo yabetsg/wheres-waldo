@@ -1,8 +1,6 @@
 import waldo from '../assets/waldo.png';
 import odlaw from '../assets/odlaw.png';
 import wizard from '../assets/wizard.png';
-import { IntroductionContext } from './Game';
-import { useContext } from 'react';
 interface ModalProps {
   posX: number | undefined;
   posY: number | undefined;

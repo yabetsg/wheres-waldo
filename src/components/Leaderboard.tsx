@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { Nav } from "./Nav";
 import {
   getDatabase,
   ref,
   child,
   get,
-  set,
-  DataSnapshot,
 } from "firebase/database";
 import { Link } from "react-router-dom";
 interface Leaderboard {
