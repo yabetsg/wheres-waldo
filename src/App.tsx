@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { Router } from './components/Router';
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
 // TODO: Add SDKs for Firebase products to use
@@ -19,9 +20,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 app;
   return (
-    <>  
+    <BrowserRouter>
      <Router/>
-    </>
+    </BrowserRouter>
+    
   )
 }
 

@@ -6,9 +6,12 @@ export const Router = () => {
   return (
     <>
       <Routes>
+       <Route path="/" element={<Game />}></Route>
+        <Route path="/wheres-waldo/" element={<Game />}></Route>
+        <Route path="/wheres-waldo" element={<Game />}></Route>
         <Route path="/leaderboard" element={<Leaderboard />}></Route>
         <Route path="/leaderboard/" element={<Leaderboard />}></Route>
-        <Route path="/wheres-waldo/" element={<Game />}></Route>
+        
       </Routes>
     </>
   );
