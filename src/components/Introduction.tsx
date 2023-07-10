@@ -1,5 +1,8 @@
 import { IntroductionContext } from "./Game";
 import { useContext } from "react";
+import waldo from '../assets/waldo.png'
+import odlaw from '../assets/odlaw.png'
+import wizard from '../assets/wizard.png'
 export const Introdcution = () => {
   const introductionContext = useContext(IntroductionContext);
   const handleClick = () => {
@@ -13,24 +16,24 @@ export const Introdcution = () => {
           <span>
             <img
               className="p-1 border border-black w-14 h-14"
-              src="/src/assets/waldo.png"
-              alt=""
+              src={waldo}
+              alt="waldo"
             />
           </span>
           <span>
             {" "}
             <img
               className="p-1 border border-black w-14 h-14"
-              src="/src/assets/odlaw.png"
-              alt=""
+              src={odlaw}
+              alt="odlaw"
             />
           </span>
           <span>
             {" "}
             <img
               className="p-1 border border-black w-14 h-14"
-              src="/src/assets/wizard.png"
-              alt=""
+              src={wizard}
+              alt="wizard"
             />
           </span>
         </div>

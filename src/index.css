@@ -15,7 +15,10 @@
 }
 @font-face {
   font-family: 'digital-clock-font';
-  src: url('src/assets/digital-7/digital-7.ttf');
+  src: url("./assets/digital-7.ttf");
+}
+.custom-font{
+  font-family: 'digital-clock-font' sans-serif system-ui, 'Segoe UI', sans-serif;
 }
 
 @tailwind base;
