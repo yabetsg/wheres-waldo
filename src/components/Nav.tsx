@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import waldo from '../assets/waldo.png'
 import odlaw from '../assets/odlaw.png'
 import wizard from '../assets/wizard.png'
+import title_img from '../assets/nav.png'
 interface NavProps{
   waldoDisplay:boolean,
   odlawDisplay:boolean,
@@ -16,8 +17,8 @@ export const Nav = ({waldoDisplay,odlawDisplay,wizardDisplay,minute,second}:NavP
       <div className="flex items-center gap-3">
         <img
           className="w-16 h-16"
-          src="./src/assets/title-img.png"
-          alt=""
+          src={title_img}
+          alt="title image"
         ></img>
         <nav className="font-[ui-sans-serif,DodgyUltraUltra] text-3xl">
           <span className="text-blue-500">Wheres</span>

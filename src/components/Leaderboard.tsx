@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import nav from '../assets/nav.png'
 import {
   getDatabase,
   ref,
@@ -60,7 +61,7 @@ export const Leaderboard = () => {
         <div className="flex items-center gap-5">
           <img
             className="w-16 h-16"
-            src="./src/assets/title-img.png"
+            src={nav}
             alt=""
           ></img>
           <Link to={"/"}>
