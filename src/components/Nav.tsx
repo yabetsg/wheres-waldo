@@ -28,7 +28,7 @@ export const Nav = ({waldoDisplay,odlawDisplay,wizardDisplay,minute,second}:NavP
         <span style={{opacity:odlawDisplay?'':0.2}}> <img className="w-14 h-14" src="/src/assets/odlaw.png" alt="" /></span>
        <span style={{opacity:wizardDisplay?'':0.2}}> <img className="w-14 h-14" src="/src/assets/wizard.png" alt="" /></span>
       </div>
-      <div className="text-black w-28 font-['digital-clock-font'] text-4xl">{minute}:{second}</div>
+      <div className="text-black w-28 font-['digital-clock-font',ui-serif,Georgia]  text-4xl">{minute}:{second}</div>
       <Link to={"/leaderboard"}><button className="font-bold bg-red-400 rounded-md h-14 w-36 hover:bg-red-500">
         Leaderboard
       </button></Link>

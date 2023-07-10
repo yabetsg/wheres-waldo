@@ -6,11 +6,10 @@ import { useContext } from 'react';
 interface ModalProps {
   posX: number | undefined;
   posY: number | undefined;
-  handleModalClick:(e:any)=>void;
+  handleModalClick:(e:React.MouseEvent<HTMLElement>)=>void;
 }
 
 export const Modal = ({ posX, posY,handleModalClick }: ModalProps) => {
-  // let introductionContext = useContext(IntroductionContext);
   return (
     <>
 

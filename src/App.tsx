@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { initializeApp } from "firebase/app";
 
-import './App.css'
+
 import { Nav } from './components/Nav';
 import { Game } from './components/Game';
 import { BrowserRouter } from 'react-router-dom';
@@ -25,11 +25,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-  const [count, setCount] = useState(0)
 
   return (
     <>  
-     {/* <Game/> */}
      <Router/>
     </>
   )
