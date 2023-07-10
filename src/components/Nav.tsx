@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-
+import waldo from '../assets/waldo.png'
+import odlaw from '../assets/odlaw.png'
+import wizard from '../assets/wizard.png'
 interface NavProps{
   waldoDisplay:boolean,
   odlawDisplay:boolean,
@@ -24,9 +26,9 @@ export const Nav = ({waldoDisplay,odlawDisplay,wizardDisplay,minute,second}:NavP
       </div>
       <div className="flex gap-6">
 
-        <span style={{opacity:waldoDisplay?'':0.2}}><img className="w-14 h-14" src="/src/assets/images.jpeg" alt="waldo" /></span>
-        <span style={{opacity:odlawDisplay?'':0.2}}> <img className="w-14 h-14" src="/src/assets/odlaw.png" alt="odlaw" /></span>
-       <span style={{opacity:wizardDisplay?'':0.2}}> <img className="w-14 h-14" src="/src/assets/wizard.png" alt="wizard" /></span>
+        <span style={{opacity:waldoDisplay?'':0.2}}><img className="w-14 h-14" src={waldo} alt="waldo" /></span>
+        <span style={{opacity:odlawDisplay?'':0.2}}> <img className="w-14 h-14" src={odlaw} alt="odlaw" /></span>
+       <span style={{opacity:wizardDisplay?'':0.2}}> <img className="w-14 h-14" src={wizard} alt="wizard" /></span>
       </div>
       <div className="text-black w-28 font-['digital-clock-font',ui-serif,Georgia]  text-4xl">{minute}:{second}</div>
       <Link to={"/leaderboard"}><button className="font-bold bg-red-400 rounded-md h-14 w-36 hover:bg-red-500">

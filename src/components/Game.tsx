@@ -1,6 +1,7 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import uniqid from "uniqid";
 import { Modal } from "./Modal";
+import game_img from '../assets/game-img.jpg';
 import {
   getDatabase,
   ref,
@@ -178,10 +179,10 @@ export const Game = () => {
           <img
             className="blur"
             onClick={handleClick}
-            src="./src/assets/game-img.jpg"
+            src={game_img}
           ></img>
         ) : (
-          <img onClick={handleClick} src="./src/assets/game-img.jpg"></img>
+          <img onClick={handleClick} src={game_img}></img>
         )}
         {displayGameEndModal && (
           <GameEndModal
